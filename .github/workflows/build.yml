@@ -62,17 +62,11 @@ jobs:
       - name: Build and Package
         run: |
           mkdir -p compiled
-          # Implementation depends on component type
           if [ "False" == "True" ]; then
             echo "Performing C++ Build for ${{ matrix.platform }}..."
-            # Placeholder for actual C++ build logic (cmake/make/install)
-            mkdir -p build && cd build
-            cmake ../source/repo-plugins -DCMAKE_INSTALL_PREFIX=../compiled
-            make -j$(nproc || sysctl -n hw.ncpu) install
-            cd ..
+            # Implementation for depends build and Kodi/Addon compilation goes here
           else
             echo "Packaging Python/XML Addon..."
-            # Standard Kodi addon packaging
             cp -r source/repo-plugins/* compiled/
           fi
 
@@ -95,4 +89,9 @@ jobs:
           TAG="v-$(date +'%Y%m%d')-${{ matrix.branch }}"
           DIST_REPO="IamRPDev/repo-plugins-build-${{ matrix.platform }}"
           FILE="repo-plugins-${{ matrix.platform }}-${{ matrix.branch }}.*"
-          gh release create "$TAG" $FILE             --repo "$DIST_REPO"             --title "Plugins ${{ matrix.branch }} Build $TAG"             --notes "Automated build from repo-plugins-build."             --prerelease ||           gh release upload "$TAG" $FILE --repo "$DIST_REPO" --clobber
+          gh release create "$TAG" $FILE \
+            --repo "$DIST_REPO" \
+            --title "Plugins ${{ matrix.branch }} Build $TAG" \
+            --notes "Automated build from repo-plugins-build." \
+            --prerelease || \
+          gh release upload "$TAG" $FILE --repo "$DIST_REPO" --clobber
