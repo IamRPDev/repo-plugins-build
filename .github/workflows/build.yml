@@ -48,7 +48,7 @@ jobs:
         uses: actions/checkout@v4
         with:
           repository: xbmc/repo-plugins
-          ref: ${{ matrix.branch == 'Piers' && 'master' || 'Omega' }}
+          ref: ${{ matrix.branch == 'Piers' && ('repo-plugins' == 'inputstream.ffmpegdirect' || 'repo-plugins' == 'inputstream.adaptive') && 'Piers' || (matrix.branch == 'Piers' && 'master' || 'Omega') }}
           path: source/repo-plugins
           fetch-depth: 1
 
